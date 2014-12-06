@@ -4,6 +4,8 @@ Created by Bakaev Nikita
 
 Sorry for my English
 
+Main file is `StatePattern.cpp` in folder `StatePattern`
+
 ## How does it work?
 
 We have class `Machine` which has field `current` which contains Class which implemented `IMachineActions` interfase.
