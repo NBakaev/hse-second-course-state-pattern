@@ -33,5 +33,8 @@ You should override following methods to creat and implementation of the interfa
 	virtual string getName()
 	virtual int getMaxSpeed()
 
+## UML
+![UML](https://raw.githubusercontent.com/NBakaev/hse-second-course-state-pattern/master/uml-state%20pattern.png)
+
 
 ### That's all
