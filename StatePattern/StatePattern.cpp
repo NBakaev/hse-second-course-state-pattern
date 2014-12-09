@@ -13,8 +13,8 @@ class Machine{
 public:
 	Machine();
 
-	void setCurrent(IMachineActions *s) {
-		current = s;
+	void setCurrent(IMachineActions *injectedCurrentState) {
+		current = injectedCurrentState;
 	}
 
 	int currentSpeed;
@@ -32,10 +32,10 @@ In normal languages it should be just interface but...
 */
 class IMachineActions{
 public:
-	virtual bool faster(Machine *m) = 0;
-	virtual bool slower(Machine *m) = 0;
-	virtual string getName(Machine *m) = 0;
-	virtual int getMaxSpeed(Machine *m) = 0;
+	virtual bool faster(Machine *injectedCurrentMachineState) = 0;
+	virtual bool slower(Machine *injectedCurrentMachineState) = 0;
+	virtual string getName(Machine *injectedCurrentMachineState) = 0;
+	virtual int getMaxSpeed(Machine *injectedCurrentMachineState) = 0;
 };
 
 
@@ -76,22 +76,22 @@ bool Machine::slower(){
 Default car - can't ride and hasn't any actions like lada calina :)
 */
 
-class DefaultMachine : public IMachineActions, public Machine{
+class DefaultMachine : public IMachineActions{
 	public:
 
-		virtual string getName(Machine *m){
+		virtual string getName(Machine *injectedCurrentMachineState){
 			return name;
 		}
 
-		virtual bool faster(Machine *m){
+		virtual bool faster(Machine *injectedCurrentMachineState){
 			return false;
 		}
 
-		virtual bool slower(Machine *m) {
+		virtual bool slower(Machine *injectedCurrentMachineState){
 			return false;
 		}
 
-		virtual int getMaxSpeed(Machine *m){
+		virtual int getMaxSpeed(Machine *injectedCurrentMachineState){
 			return maxSpeed;
 		}
 
@@ -114,29 +114,29 @@ public:
 	};
 
 
-	virtual string getName(Machine *m){
+	virtual string getName(Machine *injectedCurrentMachineState){
 		return name;
 	}
 
-	virtual bool faster(Machine *m){
-		if (maxSpeed > m->getCurrentSpeed()){
-			m->currentSpeed += 10;
+	virtual bool faster(Machine *injectedCurrentMachineState){
+		if (maxSpeed > injectedCurrentMachineState->getCurrentSpeed()){
+			injectedCurrentMachineState->currentSpeed += 10;
 			return true;
 		}
 
 		return false;
 	}
 
-	virtual bool slower(Machine *m) {
-		if (m->getCurrentSpeed() - 10 >= 0){
-			m->currentSpeed -= 10;
+	virtual bool slower(Machine *injectedCurrentMachineState) {
+		if (injectedCurrentMachineState->getCurrentSpeed() - 10 >= 0){
+			injectedCurrentMachineState->currentSpeed -= 10;
 			return true;
 		}
 
 		return false;
 	}
 
-	virtual int getMaxSpeed(Machine *m){
+	virtual int getMaxSpeed(Machine *injectedCurrentMachineState){
 		return maxSpeed;
 	}
 
@@ -161,29 +161,29 @@ class OldRussianCar : public IMachineActions
 			cout << "    You have broke OldRussianCar";
 		};
 
-		virtual bool faster(Machine *m){
-			if (maxSpeed > m->getCurrentSpeed()){
-				m->currentSpeed += 5;
+		virtual bool faster(Machine *injectedCurrentMachineState){
+			if (maxSpeed > injectedCurrentMachineState->getCurrentSpeed()){
+				injectedCurrentMachineState->currentSpeed += 5;
 				return true;
 			}
 
 			return false;
 		}
 
-		virtual bool slower(Machine *m) {
-			if (m->getCurrentSpeed() - 5 >= 0){
-				m->currentSpeed -= 5;
+		virtual bool slower(Machine *injectedCurrentMachineState) {
+			if (injectedCurrentMachineState->getCurrentSpeed() - 5 >= 0){
+				injectedCurrentMachineState->currentSpeed -= 5;
 				return true;
 			}
 
 			return false;
 		}
 
-		virtual string getName(Machine *m){
+		virtual string getName(Machine *injectedCurrentMachineState){
 			return name;
 		}
 
-		virtual int getMaxSpeed(Machine *m){
+		virtual int getMaxSpeed(Machine *injectedCurrentMachineState){
 			return maxSpeed;
 		}
 
